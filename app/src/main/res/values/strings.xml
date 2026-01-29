@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Unlock FPS</string>
+    <string name="unlock_60_120_fps">Mở khóa 60/120 FPS</string>
+    <string name="note">Lưu ý: Hãy đảm bảo Shizuku đã được kích hoạt trước khi thực hiện Unlock. Sau khi nhấn, hãy khởi động lại game để áp dụng.</string>
+    <string name="find_version">● Phiên bản: Đang dò tìm...</string>
+    <string name="check_shizuku">● Shizuku: Đang kiểm tra...</string>
+    <string name="system_status">Trạng thái hệ thống</string>
+    <string name="arena_of_valor">Arena of Valor</string>
+    <string name="shizuku_ready">● Shizuku: Đã sẵn sàng</string>
+    <string name="shizuku_not_ready">● Shizuku: Chưa khởi chạy</string>
+    <string name="version_game">● Phiên bản: %1$s</string>
+    <string name="version_game_not_found">● Phiên bản: Không tìm thấy</string>
+</resources>
