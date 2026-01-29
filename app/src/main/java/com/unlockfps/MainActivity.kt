@@ -133,10 +133,13 @@ class MainActivity : AppCompatActivity() {
                 val res1 = service.saveFile("${targetPath}60FPSWhiteList.bytes", data1)
                 val res2 = service.saveFile("${targetPath}VeryHighFrameModeBlackList.bytes", data2)
 
-                if (res1 && res2) {
+                if (res1 == "OK" && res2 == "OK") {
                     Toast.makeText(this, "Unlock thành công!", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Ghi file thất bại!", Toast.LENGTH_SHORT).show()
+                    // Hiển thị chi tiết lỗi nếu thất bại
+                    val errorMsg = if (res1 != "OK") res1 else res2
+                    Log.e("UnlockFPS", "Thất bại: $errorMsg")
+                    Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 Log.e("Unlock", e.message.toString())
