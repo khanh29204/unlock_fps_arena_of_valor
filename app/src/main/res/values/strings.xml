@@ -10,4 +10,6 @@
     <string name="shizuku_not_ready">● Shizuku: Chưa khởi chạy</string>
     <string name="version_game">● Phiên bản: %1$s</string>
     <string name="version_game_not_found">● Phiên bản: Không tìm thấy</string>
+    <string name="btn_grant_permission">Cấp quyền Shizuku</string>
+    <string name="shizuku_permission_not_granted">Chưa cấp quyền Shizuku</string>
 </resources>

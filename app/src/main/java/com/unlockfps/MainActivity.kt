@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var txtShizukuStatus: TextView
     private lateinit var txtGameStatus: TextView
+    private lateinit var btnUnlock: Button
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             if (requestCode == SHIZUKU_CODE && grantResult == PackageManager.PERMISSION_GRANTED) {
                 bindMyService()
             }
+            updateShizukuStatusUI()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         txtShizukuStatus = findViewById(R.id.txtShizukuStatus)
         txtGameStatus = findViewById(R.id.txtGameStatus)
-        val btnUnlock = findViewById<Button>(R.id.btnUnlock)
+        btnUnlock = findViewById(R.id.btnUnlock)
 
         Shizuku.addRequestPermissionResultListener(permissionListener)
         updateShizukuStatusUI()
@@ -69,12 +71,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateShizukuStatusUI() {
-        if (Shizuku.pingBinder()) {
-            txtShizukuStatus.text = getString(R.string.shizuku_ready)
-            txtShizukuStatus.setTextColor(getColor(R.color.success_green))
-        } else {
+        if (!Shizuku.pingBinder()) {
             txtShizukuStatus.text = getString(R.string.shizuku_not_ready)
             txtShizukuStatus.setTextColor(getColor(R.color.text_secondary))
+            btnUnlock.text = getString(R.string.unlock_60_120_fps)
+            return
+        }
+        if (Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED) {
+            txtShizukuStatus.text = getString(R.string.shizuku_ready)
+            txtShizukuStatus.setTextColor(getColor(R.color.success_green))
+            btnUnlock.text = getString(R.string.unlock_60_120_fps)
+        } else {
+            txtShizukuStatus.text = getString(R.string.shizuku_permission_not_granted)
+            txtShizukuStatus.setTextColor(getColor(R.color.text_secondary))
+            btnUnlock.text = getString(R.string.btn_grant_permission)
         }
     }
 
@@ -101,9 +111,7 @@ class MainActivity : AppCompatActivity() {
         if (Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED) {
             if (userService == null) {
                 bindMyService()
-                Toast.makeText(
-                    this, "Đang kết nối Service, hãy nhấn lại lần nữa", Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Đang kết nối Service...", Toast.LENGTH_SHORT).show()
             } else {
                 unlockFps()
             }
@@ -180,5 +188,10 @@ class MainActivity : AppCompatActivity() {
             Shizuku.unbindUserService(userServiceArgs, connection, true)
         } catch (_: Exception) {
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateShizukuStatusUI()
     }
 }
